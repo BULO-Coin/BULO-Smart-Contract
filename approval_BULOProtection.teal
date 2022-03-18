@@ -1,0 +1,469 @@
+#pragma version 5
+txn ApplicationID
+int 0
+==
+bnz main_l28
+txn OnCompletion
+int OptIn
+==
+bnz main_l27
+txn OnCompletion
+int CloseOut
+==
+bnz main_l26
+txn OnCompletion
+int UpdateApplication
+==
+bnz main_l25
+txn OnCompletion
+int DeleteApplication
+==
+bnz main_l24
+txn OnCompletion
+int NoOp
+==
+bnz main_l7
+err
+main_l7:
+global GroupSize
+int 2
+==
+txna ApplicationArgs 0
+byte "I_Promise_I_will_not_Rugpull"
+==
+&&
+bnz main_l21
+global GroupSize
+int 3
+==
+txna ApplicationArgs 0
+byte "Ho_No_I_Got_Rugged"
+==
+&&
+bnz main_l18
+global GroupSize
+int 1
+==
+txna ApplicationArgs 0
+byte "Did_we_succeed"
+==
+&&
+bnz main_l15
+global GroupSize
+int 1
+==
+txna ApplicationArgs 0
+byte "Setup"
+==
+&&
+bnz main_l12
+err
+main_l12:
+byte "Setup_complete"
+app_global_get
+int 0
+==
+bnz main_l14
+int 0
+return
+main_l14:
+byte "BULO_ID"
+txna Assets 0
+app_global_put
+itxn_begin
+int axfer
+itxn_field TypeEnum
+byte "BULO_ID"
+app_global_get
+itxn_field XferAsset
+int 0
+itxn_field AssetAmount
+global CurrentApplicationAddress
+itxn_field AssetReceiver
+itxn_submit
+byte "Buloed_ASA_ID"
+txna Assets 1
+app_global_put
+itxn_begin
+int axfer
+itxn_field TypeEnum
+byte "Buloed_ASA_ID"
+app_global_get
+itxn_field XferAsset
+int 0
+itxn_field AssetAmount
+global CurrentApplicationAddress
+itxn_field AssetReceiver
+itxn_submit
+byte "Buloed_ASA_LP_Address"
+txna Accounts 1
+app_global_put
+byte "RescueWallet_Address"
+txna Accounts 2
+app_global_put
+byte "AlgoFaucetWallet_Address"
+txna Accounts 3
+app_global_put
+byte "StupidityWallet_Address"
+txna Accounts 4
+app_global_put
+byte "Setup_complete"
+int 1
+app_global_put
+int 1
+return
+main_l15:
+byte "Buloed_ASA_LP_Address"
+app_global_get
+balance
+byte "Buloed_ASA_LP_upper_limit"
+app_global_get
+<=
+global LatestTimestamp
+byte "BULO_locked_until"
+app_global_get
+>
+&&
+byte "Setup_complete"
+app_global_get
+int 2
+==
+&&
+bnz main_l17
+int 0
+return
+main_l17:
+txn Sender
+txna Assets 0
+asset_holding_get AssetBalance
+store 3
+store 4
+load 3
+assert
+load 4
+int 2
+/
+store 5
+itxn_begin
+int axfer
+itxn_field TypeEnum
+byte "BULO_ID"
+app_global_get
+itxn_field XferAsset
+load 5
+itxn_field AssetAmount
+byte "RescueWallet_Address"
+app_global_get
+itxn_field AssetReceiver
+itxn_submit
+byte "Setup_complete"
+int 3
+app_global_put
+int 1
+return
+main_l18:
+txn GroupIndex
+int 2
+-
+gtxns TypeEnum
+int pay
+==
+txn GroupIndex
+int 2
+-
+gtxns Sender
+txn Sender
+==
+&&
+txn GroupIndex
+int 2
+-
+gtxns Receiver
+global CurrentApplicationAddress
+==
+&&
+txn GroupIndex
+int 2
+-
+gtxns Amount
+int 2000
+==
+&&
+txn GroupIndex
+int 1
+-
+gtxns TypeEnum
+int axfer
+==
+&&
+txn GroupIndex
+int 1
+-
+gtxns XferAsset
+byte "Buloed_ASA_ID"
+app_global_get
+==
+&&
+txn GroupIndex
+int 1
+-
+gtxns Sender
+txn Sender
+==
+&&
+txn GroupIndex
+int 1
+-
+gtxns AssetReceiver
+global CurrentApplicationAddress
+==
+&&
+assert
+byte "Buloed_ASA_LP_Address"
+app_global_get
+balance
+byte "Buloed_ASA_LP_lower_limit"
+app_global_get
+<=
+bnz main_l20
+int 0
+return
+main_l20:
+itxn_begin
+int axfer
+itxn_field TypeEnum
+byte "BULO_ID"
+app_global_get
+itxn_field XferAsset
+txn GroupIndex
+int 1
+-
+gtxns AssetAmount
+callsub sub0
+itxn_field AssetAmount
+txn Sender
+itxn_field AssetReceiver
+itxn_submit
+int 1
+return
+main_l21:
+txn GroupIndex
+int 1
+-
+gtxns TypeEnum
+int axfer
+==
+txn GroupIndex
+int 1
+-
+gtxns XferAsset
+byte "BULO_ID"
+app_global_get
+==
+&&
+txn GroupIndex
+int 1
+-
+gtxns Sender
+txn Sender
+==
+&&
+txn GroupIndex
+int 1
+-
+gtxns AssetReceiver
+global CurrentApplicationAddress
+==
+&&
+assert
+txn GroupIndex
+int 1
+-
+gtxns AssetAmount
+int 10000000
+>=
+byte "Setup_complete"
+app_global_get
+int 1
+==
+&&
+bnz main_l23
+int 0
+return
+main_l23:
+itxn_begin
+int axfer
+itxn_field TypeEnum
+byte "BULO_ID"
+app_global_get
+itxn_field XferAsset
+txn GroupIndex
+int 1
+-
+gtxns AssetAmount
+int 2
+*
+int 100
+/
+itxn_field AssetAmount
+byte "RescueWallet_Address"
+app_global_get
+itxn_field AssetReceiver
+itxn_submit
+itxn_begin
+int axfer
+itxn_field TypeEnum
+byte "BULO_ID"
+app_global_get
+itxn_field XferAsset
+txn GroupIndex
+int 1
+-
+gtxns AssetAmount
+int 2
+*
+int 100
+/
+itxn_field AssetAmount
+byte "AlgoFaucetWallet_Address"
+app_global_get
+itxn_field AssetReceiver
+itxn_submit
+itxn_begin
+int axfer
+itxn_field TypeEnum
+byte "BULO_ID"
+app_global_get
+itxn_field XferAsset
+txn GroupIndex
+int 1
+-
+gtxns AssetAmount
+int 1
+*
+int 100
+/
+itxn_field AssetAmount
+byte "StupidityWallet_Address"
+app_global_get
+itxn_field AssetReceiver
+itxn_submit
+byte "Buloed_ASA_LP_lower_limit"
+txna ApplicationArgs 1
+btoi
+app_global_put
+byte "Buloed_ASA_LP_upper_limit"
+txna ApplicationArgs 2
+btoi
+app_global_put
+global LatestTimestamp
+txna ApplicationArgs 3
+btoi
+int 86400
+*
++
+store 0
+byte "BULO_locked_until"
+load 0
+app_global_put
+byte "Commited_BULO"
+txn GroupIndex
+int 1
+-
+gtxns AssetAmount
+txn GroupIndex
+int 1
+-
+gtxns AssetAmount
+int 5
+*
+int 100
+/
+-
+app_global_put
+byte "Setup_complete"
+int 2
+app_global_put
+int 1
+return
+main_l24:
+int 0
+return
+main_l25:
+int 0
+return
+main_l26:
+int 0
+return
+main_l27:
+int 0
+return
+main_l28:
+byte "BULO_lovers_count"
+int 0
+app_global_put
+byte "Buloed_ASA_Max_Supply"
+int 0
+app_global_put
+byte "BULO_ID"
+int 0
+app_global_put
+byte "Buloed_ASA_ID"
+int 0
+app_global_put
+byte "Buloed_ASA_LP_Address"
+byte "000"
+app_global_put
+byte "RescueWallet_Address"
+byte "111"
+app_global_put
+byte "AlgoFaucetWallet_Address"
+byte "222"
+app_global_put
+byte "StupidityWallet_Address"
+byte "222"
+app_global_put
+byte "Buloed_ASA_LP_lower_limit"
+int 0
+app_global_put
+byte "Buloed_ASA_LP_upper_limit"
+int 0
+app_global_put
+byte "BULO_locked_until"
+int 0
+app_global_put
+byte "Commited_BULO"
+int 0
+app_global_put
+byte "ASA_BULO_Exchange_Rate"
+int 0
+app_global_put
+byte "Setup_complete"
+int 0
+app_global_put
+int 1
+return
+sub0: // ComputeBuloAmmount
+store 6
+txna Assets 1
+asset_params_get AssetTotal
+store 1
+store 2
+load 1
+assert
+txna Assets 1
+byte "Buloed_ASA_ID"
+app_global_get
+==
+bz sub0_l2
+load 6
+byte "Commited_BULO"
+app_global_get
+*
+load 2
+/
+store 7
+load 7
+retsub
+sub0_l2:
+err
