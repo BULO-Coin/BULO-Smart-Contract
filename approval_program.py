@@ -1,3 +1,4 @@
+
 """BULO Coin Smartcontract"""
 
 def approval_program():
@@ -252,7 +253,7 @@ def approval_program():
         If(
             And(
                 #If the Balance of the LP address is higher than the limit defined when the contract was setup, the coin is successful
-                Balance(App.globalGet(Bytes("Buloed_ASA_LP_Address"))) <= App.globalGet(Bytes("Buloed_ASA_LP_upper_limit")),
+                Balance(App.globalGet(Bytes("Buloed_ASA_LP_Address"))) >= App.globalGet(Bytes("Buloed_ASA_LP_upper_limit")),
                 Global.latest_timestamp() > App.globalGet(Bytes("BULO_locked_until")),
                 App.globalGet(Bytes("Setup_complete")) == Int(2),
             ),

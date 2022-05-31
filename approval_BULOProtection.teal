@@ -118,7 +118,7 @@ app_global_get
 balance
 byte "Buloed_ASA_LP_upper_limit"
 app_global_get
-<=
+>=
 global LatestTimestamp
 byte "BULO_locked_until"
 app_global_get
