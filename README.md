@@ -20,6 +20,7 @@ For Pera wallet, it's here: <https://support.perawallet.app/en/article/connectin
 * Testnet BULO ASA ID is: **58716917**
 * Testnet "Super Shit COin" ASA ID  is **79306294**
 * Testnet "BULO Protection" smartcontract ID for "Super Shit COin" is: **79494248**
+* Testnet "BULO Protection" smartcontract  **79494248** wallet is: **77CNP4NAQWSEGTMDGUJTD5Z3EBKNQZ2KWVWEG5UOI5QUUNIOEZQ2K6ZTMQ**
 * Testnet "Super Shit COin" LP Address is: **OQS7CU4JB5GVHGJ4EIJUPD4L5HABZUI2OVJM6KEKCS4XPU57PPAFZ7P5IU**
 * Testnet Rescue Wallet is: **C54GYXRIWSV7RLW6YQQQATPIN3N6LFUY26EEV7IIVBVP3E7P653PB344RI**
 * Testnet fake Algofaucet address is: **KNUUJRARQNGBBRWPCQL6JD6V5QTMLIRM2GTLTK2PQRUVWVYXUXVWOXGS4I**
